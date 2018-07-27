@@ -48,4 +48,4 @@ class Solution {
 	}
 }
 
-// Time O(K^N)  k is the types of coins, n is the target		Space: O(K)
+// Time O(N ^ K)  k is the types of coins, n is the target		Space: O(K)

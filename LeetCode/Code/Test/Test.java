@@ -7,52 +7,11 @@ import java.util.*;
  
 public class Test{
   public static void main(String args[]){
-    Solution so = new Solution();
-    boolean a = true;
-    boolean b = !a;
-    System.out.println(b);
+    int[] a = new int[4];
+    a[0...3] = -1;
+    for (int i : a) {
+    	System.out.println(i);
+    }
   }
 }
 
-class Solution {
-  private PriorityQueue<Integer> smallHeap;
-  private PriorityQueue<Integer> largeHeap;
-  private Double median;
-  public Solution() {
-    largeHeap = new PriorityQueue<>();
-    smallHeap = new PriorityQueue<>(11, Collections.reverseOrder());
-    median = null;
-  }
-  
-  public void read(int value) {
-    if (smallHeap.size() == 0) {
-      smallHeap.offer(value);
-      median = (double) value;
-      return;
-    }
-    int sTop = smallHeap.peek();
-    int sSize = smallHeap.size();
-    int lSize = largeHeap.size();
-    if (value <= sTop) {
-      smallHeap.offer(value);
-      if (sSize == lSize) {
-        median = (double)smallHeap.peek();
-      }else if (sSize == lSize + 1) {
-        largeHeap.offer(smallHeap.poll());
-        median = (double)(largeHeap.peek() + smallHeap.peek()) / 2;
-      }
-    }else {
-      largeHeap.offer(value);
-      if (sSize == lSize) {
-        smallHeap.offer(largeHeap.poll());
-        median = (double)smallHeap.peek();
-      } else if (sSize == lSize + 1) {
-        median = (double)(largeHeap.peek() + smallHeap.peek()) / 2;
-      }
-    }
-  }
-  
-  public Double median() {
-    return median;
-  }
-}

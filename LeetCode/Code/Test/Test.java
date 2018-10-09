@@ -11,11 +11,11 @@ public class Test {
 		// String[] a = s.split(" ");
 		// System.out.println(a.length);
 
-		A.print();
-		A a = new A();
-		a.print();
+		Queue<String> q = new LinkedList<>();
+		q.offer(null);
+		q.offer(null);
+		System.out.println(q.size());
 	}
-
 }
 
 class A{

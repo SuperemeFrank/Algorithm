@@ -1,38 +1,31 @@
 public class Solution {
   public int[] quickSort(int[] array) {
-    if (array == null || array.length == 0) {
-      return array;
-    }
-    sort(array, 0, array.length - 1);
+    if (array == null || array.length == 0) return array;
+    quickSort(array, 0, array.length - 1);
     return array;
   }
-  private void sort(int[] array, int start, int end) {
-    if (start > end) {
-      return;
-    }
-    int pivot = partition(array, start, end);
-    sort(array, start, pivot - 1);
-    sort(array, pivot + 1, end);
+  
+  private void quickSort(int[] array, int left, int right) {
+    if (left >= right) return;
+    int pivot = partition(array, left, right);
+    quickSort(array, left, pivot - 1);
+    quickSort(array, pivot + 1, right);
   }
   
-  private int partition(int[] array, int start, int end) {
-    int thred = array[end];
-    int left = start;
-    int right = end - 1;
-    int i = start;
-    while(i <= right) {
-      if (array[i] < thred) {
-        swap(array, left, i);
-        left++;
-        i++;
-      }else {
-        swap(array, right, i);
-        right--;
-      }
+  private int partition(int[] array, int left, int right) {
+    Random r = new Random();
+    int piIndex = r.nextInt(right - left + 1) + left;
+    int pivot = array[piIndex];
+    swap(array, piIndex, right);
+    int i = left - 1;
+    
+    for (int j = left; j <= right; j++) {
+      if (array[j] <= pivot) swap(array, ++i, j);
     }
-    swap(array, right + 1, end);
-    return right + 1;
+    
+    return i;
   }
+  
   private void swap(int[] array, int a, int b) {
     int tmp = array[a];
     array[a] = array[b];
@@ -57,3 +50,4 @@ public class Solution {
          O(n^2)  worst, if pivot is located at the left leftmost during each partition
    Space: O(height) :     O(logn) average     O(n) worst  
 */
+

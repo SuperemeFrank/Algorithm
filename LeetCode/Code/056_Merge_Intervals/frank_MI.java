@@ -13,23 +13,38 @@ class Solution {
         if (intervals == null || intervals.size() == 0) {
             return res;
         }
-        Collections.sort(intervals, (a, b) -> a.start - b.start);  // sort first
-        int start = intervals.get(0).start;
-        int end = intervals.get(0).end;
-        for (int i = 0; i < intervals.size(); i++) {
-            Interval inter = intervals.get(i);
-            if (inter.start <= end) {
-                end = end > inter.end ? end : inter.end;  // The end of next might less than the end of current
-            } else {
-                res.add(new Interval(start, end));
-                start = inter.start;
-                end = inter.end;
+        
+        Collections.sort(intervals, new Comparator<Interval>() {
+           @Override
+            public int compare(Interval a, Interval b) {
+                if (a.start == b.start) return 0;
+                return a.start < b.start ? -1 : 1;
+            }
+        });
+        
+        
+        int left = intervals.get(0).start;
+        int right = intervals.get(0).end;
+        
+        for (Interval inter : intervals) {
+            if (inter.start > right) {
+                res.add(new Interval(left, right));
+                left = inter.start;
+                right = inter.end;
+            }else {
+                right = inter.end > right ? inter.end : right;
             }
         }
-        res.add(new Interval(start, end));  //care here, only the interval before current has been added in res
+        
+        res.add(new Interval(left, right));
+        
         return res;
     }
-
 }
 
-//scanning Algrothm *****
+/*  Time: O(n)  Space: O(1)    n = intervals.size()
+    sort all interval based on their start
+    
+    left right pointer to record current handle interval until there is it not overlap with others
+    
+*/

@@ -1,51 +1,35 @@
 public class Solution {
   public int[] mergeSort(int[] array) {
-    if (array == null || array.length == 0) {
-      return array;
-    }
-    sortHelper(array, 0, array.length - 1);
+    if (array == null || array.length == 0) return array;
+    sort(array, 0, array.length - 1);
     return array;
   }
   
-  private void sortHelper(int[] array, int start, int end) {
-    if (start == end) {
-      return;
-    }
-    int mid = start + (end - start) / 2;
-    sortHelper(array, start, mid);
-    sortHelper(array, mid + 1, end);
-    merge(array, start, mid, end);
+  private void sort(int[] array, int left, int right) {
+    if (left >= right) return;
+    int mid = left + (right - left) / 2;  // 1
+    sort(array, left, mid); 
+    sort(array, mid + 1, right);
+    merge(array, left, mid, right);
   }
   
-  private void merge(int[] array, int start, int mid, int end) {
+  private void merge(int[] array, int left, int mid, int right) {
+    int[] l1 = new int[mid - left + 1];
+    int[] l2 = new int[right - mid];
     
-    int[] list1 = new int[mid - start + 1];
-    int[] list2 = new int[end - mid];
+    for (int i = 0; i < l1.length; i++) l1[i] = array[left + i];
+    for (int i = 0; i < l2.length; i++) l2[i] = array[mid + 1 + i];
     
-    for (int i = start; i <= mid; i++) {
-      list1[i - start] = array[i];
-    }
+    int p1 = 0, p2 = 0;
+    int cur = left;
+    while (p1 < l1.length && p2 < l2.length) 
+      array[cur++] = l1[p1] < l2[p2] ? l1[p1++] : l2[p2++];
     
-    for (int i = mid + 1; i <= end; i++) {
-      list2[i - mid - 1] = array[i];
-    }
+    int pLeft = p1 < l1.length ? p1 : p2;
+    int[] lLeft = p1 < l1.length ? l1 : l2;
     
-    int first = 0;
-    int second = 0;
-    int curr = start;
-    while (first < list1.length && second < list2.length) {
-      if (list1[first] > list2[second]) {
-        array[curr++] = list2[second++];
-      }else {
-        array[curr++] = list1[first++];
-      }
-    }
-    int[] resList = first == list1.length ? list2 : list1;
-    int res = first == list1.length ? second : first;
-    while (res < resList.length) {
-      array[curr++] = resList[res++];
-    }
-    return;
+    for (int i = pLeft; i < lLeft.length; i++) 
+      array[cur++] = lLeft[i];
   }
 }
 
@@ -71,3 +55,4 @@ public class Solution {
   Space: O(height + n) ~ O(n)
         height(logn) + max helper array n
 */
+

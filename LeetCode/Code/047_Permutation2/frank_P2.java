@@ -1,32 +1,52 @@
 class Solution {
     public List<List<Integer>> permuteUnique(int[] nums) {
+        if (nums == null) return new ArrayList<>();
+        Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<>();
-        if (nums == null || nums.length == 0) {
-            return res;
-        }
-        Arrays.sort(nums);                              //must be sorted for Remove Duplication
-        int[] visited = new int[nums.length];       
-        helper(nums, res, new ArrayList<Integer>(), visited);
+        dfsHelper(res, nums, 0);
         return res;
     }
     
-    public void helper(int[] nums, List<List<Integer>> res, ArrayList<Integer> list, int[] visited) {
-        if (list.size() == nums.length) {
-            res.add(new ArrayList<Integer>(list));
+    private void dfsHelper(List<List<Integer>> res, int[] nums, int startIndex) {
+        if (startIndex == nums.length) {
+            res.add(toList(nums));
             return;
         }
-        for (int i = 0; i < nums.length; i++){
-             if (visited[i] == 1) {                 // if Array allows Duplication, visited[] should be used instead of "list.contains(nums[i])""
-                 continue;
-             }
-            if (i != 0 && nums[i] == nums[i - 1] && visited[i - 1] == 0) { //omit repeatition
-                continue;
+        
+        Set<Integer> set = new HashSet<>();
+        for (int i = startIndex; i < nums.length; i++) {
+            if (set.add(nums[i])) {
+                swap(nums, startIndex, i);
+                dfsHelper(res, nums, startIndex + 1);
+                swap(nums, startIndex, i);
             }
-            list.add(nums[i]);
-            visited[i] = 1;
-            helper(nums, res, list, visited);
-            list.remove(list.size() - 1);          //traceBack
-            visited[i] = 0;
         }
     }
+    
+    private List<Integer> toList(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            res.add(nums[i]);
+        }
+        return res;
+    }
+    
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
 }
+
+
+/*  Time: O(n!)  Space: O(n)
+
+    to deduplicate, because we use swap, we cannot use i != start && nums[i] == nums[i - 1] to do that.
+                    1 1 2
+                    /     \
+0                  1   (1) 2
+                /   \     / 
+1              1    2    1  
+               /    /    /      
+2            2     1     1
+*/

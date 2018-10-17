@@ -140,11 +140,11 @@ class NumArray2 {
         int l = i + n;
         int r = j + n;
         while (l < r) {
-            if (l % 2 == 1) {
+            if (l % 2 == 1) { // l is the right child of its parent
                 sum += segTree[l];
                 l++;
             }
-            if (r % 2 == 0) {
+            if (r % 2 == 0) { // r is the left child of its parent
                 sum += segTree[r];
                 r--;
             }

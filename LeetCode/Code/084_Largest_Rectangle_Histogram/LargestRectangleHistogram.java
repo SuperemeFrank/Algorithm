@@ -17,7 +17,7 @@ class Solution {
         }
         
         while (!stack.isEmpty()) {
-            int his = stack.peek();
+            int his = stack.peek()
             stack.pop();
             int area = heights[his] * (stack.isEmpty() ? n : n - stack.peek() - 1);
             

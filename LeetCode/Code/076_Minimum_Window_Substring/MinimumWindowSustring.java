@@ -1,69 +1,41 @@
 class Solution {
     public String minWindow(String s, String t) {
-        if (s == null || t == null || s.length() == 0 || t.length() == 0) {
-            return "";
-        }
-        Map<Character, Integer> counts = new HashMap<>();
+        Map<Character, Integer> map = new HashMap<>();
         for (int i = 0; i < t.length(); i++) {
-            char cur = t.charAt(i);
-            int count = counts.getOrDefault(cur, 0);
-            counts.put(cur, count + 1);
+            map.put(t.charAt(i), map.getOrDefault(t.charAt(i), 0) + 1);
         }
-        
-        int left = 0;
-        int right = 0;
-        int start = 0;
-        int end = 0;
-        int min = Integer.MAX_VALUE;
-        while (right < s.length() || isValid(counts)) {
-            while (right < s.length() && !isValid(counts)) {
-                char rCh = s.charAt(right);
-                if (counts.containsKey(rCh)) {
-                    counts.put(rCh, counts.get(rCh) - 1);
+        int count = t.length();
+        int max = Integer.MAX_VALUE;
+        String res = "";
+        int left = 0, right = 0;
+        while (left < s.length()) {
+            while (right < s.length() && count != 0) {
+                char cur = s.charAt(right);
+                if (map.containsKey(cur)) {
+                    map.put(cur, map.get(cur) - 1);
+                    if (map.get(cur) >= 0) count--;
                 }
                 right++;
             }
-            
-            if (min > right - left) {
-                min = right - left;
-                start = left;
-                end = right;
+            if (count == 0 && max > (right - left)) {
+                max = right - left;
+                res = s.substring(left, right);
             }
-            char lCh = s.charAt(left);
-            if (counts.containsKey(lCh)) {
-                    counts.put(lCh, counts.get(lCh) + 1);
+            char deChar = s.charAt(left);
+            if (map.containsKey(deChar)) {
+                    map.put(deChar, map.get(deChar) + 1);
+                    if (map.get(deChar) > 0) count++;
             }
             left++;
         }
-        
-        left--;
-        char lCh = s.charAt(left);
-        if (counts.containsKey(lCh)) {
-                counts.put(lCh, counts.get(lCh) - 1);
-        }
-        
-        if (left == 0 && right == s.length() && !isValid(counts)) {
-            return "";
-        }
-        return s.substring(start, end);
-    }
-    
-    private boolean isValid(Map<Character, Integer> map) {
-        
-        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
-            if (entry.getValue() > 0) {
-                return false;
-            }
-        }
-        return true;
+        return res;
     }
 }
 
 
-/*  Time: O(n)  Space: O(1)
-
+/*  Time: O(n)  Space: O(n)
         ADOBECODEBANC     ABC
-        l   r
+        l    r
     
     when the substring is not valid, r move forward
     when the substring is valid, l move forward

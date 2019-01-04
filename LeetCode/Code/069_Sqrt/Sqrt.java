@@ -1,29 +1,27 @@
 class Solution {
     public int mySqrt(int x) {
-        if (x < 1) {
-            return 0;
+        long right = 2;
+        while (right * right < x) {
+            right *= 2;
         }
-        long left = 1;
-        long right = x;
+        
+        long left = 0;
         while (left + 1 < right) {
             long mid = left + (right - left) / 2;
             if (mid * mid <= x) {
-                left = mid;
-            } else {
+                left = mid; 
+            }else {
                 right = mid;
             }
         }
-        if (right * right <= x) {
-            return (int)right;
-        }
-        if (left * left <= x) {
-            return (int)left;
-        }
-        return -1;
+        if (right * right <= x) return (int)right;
+        return (int)left;
     }
 }
 
+/* Time: O(logn)   Space:O(1)
+    get the boundary of decimal
+    
+    binary search the last one, the square of which is smaller than x
 
-/* Time: O(x)   Space: O(1)
-    take care of over boundary
 */

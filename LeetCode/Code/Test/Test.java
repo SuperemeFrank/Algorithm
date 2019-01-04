@@ -2,25 +2,32 @@ import java.util.Scanner;
 import java.lang.Math;
 import java.util.*;
 import java.io.*;
-public class Test {
-    
-	public static void main(String[] args) {
-		// String s = "";
-		// s = s.trim();
-		// System.out.println(s.length());
-		// String[] a = s.split(" ");
-		// System.out.println(a.length);
+import java.text.SimpleDateFormat;
 
-		boolean b = false;
-		boolean a = !b;
-		if (b) {
-			System.out.println("asd");
+public class Test {
+	public static void main(String[] args) {
+
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		try{
+			System.out.println(df.parse("1994-2-1 23:11:59"));
+		}catch(Exception e) {
+
 		}
 	}
 }
 
-class A{
-	public static void print() {
-		System.out.println("asda");
-	}
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

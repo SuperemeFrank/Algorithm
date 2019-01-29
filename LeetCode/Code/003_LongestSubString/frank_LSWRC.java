@@ -1,59 +1,32 @@
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        if (s == null || s.length() == 0) {
+        if (s == null) {
             return 0;
         }
-        int res = 1;
-        for (int i = 0; i < s.length() - 1; i ++) {
-            String str = s.substring(i, i + 1);
-            for (int j = i + 1; j < s.length(); j ++) {
-                char ch = s.charAt(j);
-                if (str.contains(ch + "")) {
-                    res = res > (j - i) ? res : (j - i);
-                    break;
-                }
-                if (j == s.length() - 1) {
-                    res = res > (j - i + 1) ? res : (j - i + 1);
-                }
-                str = s.substring(i, j + 1);
-            }
-        }
-        return res;
-    }
-}
-
-/*
-	Time: O(n^2) Space(n ^ 2)
-	Coner Case:
-		"asd" "" "abab"
-*/
-
-
-class Solution2 {
-    public int lengthOfLongestSubstring(String s) {
-        if (s == null || s.length() == 0) {
-            return 0;
-        }
-        int res = 1;
         int i = 0;
         int j = 0;
+        int max = 0;
         Set<Character> set = new HashSet<>();
-        while (i < s.length() && j < s.length()) {
-            char ch = s.charAt(j);
-            if (! set.contains(ch)) {
-                set.add(ch);
-                res = res > (j - i + 1) ? reås : (j - i + 1);
-                j ++;
-            } else {
-                set.remove(s.charAt(i));
-                i ++;
-            }
+        while (i < s.length()) {
+            while (j < s.length() && set.add(s.charAt(j))) {
+                j++; 
+            } 
+            max = Math.max(max, set.size());
+            set.remove(s.charAt(i));
+            i++;
+            
         }
-        return res;
+        return max;
     }
 }
-/* 
-	Time: O(n) Space: O(n)
 
-	seems like a range, we try to extend the range to get the longest length
+/*    Time: O(n)  Space: O(n)
+    Sliding window
+    i j
+    the subString between i(inclusive) to j(exclusive) should always be valid
+
+    use j to traverse the String, if current j is still valid, move j
+    if not, move i untill the subString becomes valid again
+
+    use a bit map to track the characters in the string
 */

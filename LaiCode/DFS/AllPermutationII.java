@@ -25,7 +25,7 @@ public class Solution {
     array[b] = tmp;
   }
 }
-/* Time: O(n!) Space: O(n) 
+/* Time: O(n!) Space: O(n!) 
   swap optimize the algorithm from O(n^n) to O(n!)
   ***** swap will crash the order, so use (i == 0 && array[i - 1] == array[i]) de-duplicate make non sense
   
@@ -44,3 +44,4 @@ pos 2         aa,bc ab,ac ac,ab
   just swap the current pos of selected char in the array
   
 */
+  

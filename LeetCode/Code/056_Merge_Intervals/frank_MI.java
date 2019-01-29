@@ -10,34 +10,26 @@
 class Solution {
     public List<Interval> merge(List<Interval> intervals) {
         List<Interval> res = new ArrayList<>();
-        if (intervals == null || intervals.size() == 0) {
-            return res;
-        }
-        
-        Collections.sort(intervals, new Comparator<Interval>() {
-           @Override
+        if (intervals == null || intervals.size() == 0) return res;
+        Collections.sort(intervals, new Comparator<Interval>(){
+            @Override
             public int compare(Interval a, Interval b) {
                 if (a.start == b.start) return 0;
                 return a.start < b.start ? -1 : 1;
             }
         });
-        
-        
-        int left = intervals.get(0).start;
-        int right = intervals.get(0).end;
-        
-        for (Interval inter : intervals) {
-            if (inter.start > right) {
-                res.add(new Interval(left, right));
-                left = inter.start;
-                right = inter.end;
+        int i = 0, j = 1;
+        while (j < intervals.size()) {
+            if (intervals.get(j).start <= intervals.get(i).end) {
+                intervals.get(i).end = intervals.get(i).end < intervals.get(j).end ? 
+                    intervals.get(j).end : intervals.get(i).end;
             }else {
-                right = inter.end > right ? inter.end : right;
+                res.add(new Interval(intervals.get(i).start, intervals.get(i).end));
+                i = j;
             }
+            j++;
         }
-        
-        res.add(new Interval(left, right));
-        
+        res.add(new Interval(intervals.get(i).start, intervals.get(i).end));
         return res;
     }
 }
